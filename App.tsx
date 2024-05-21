@@ -8,19 +8,23 @@ import { Amplify } from 'aws-amplify';
 import amplifyconfig from './app/aws-exports';
 import { QueryClientProvider } from 'react-query';
 import queryClient from './app/navigation/queryClient';
+import { RecoilRoot } from 'recoil';
+
 
 Amplify.configure(amplifyconfig);
 export default function App() {
 
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <PaperProvider theme={theme}>
-        <NavigationContainer>
-          <MainTabs />
-        </NavigationContainer>
-      </PaperProvider>
-      </QueryClientProvider>
+    <RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <PaperProvider theme={theme}>
+          <NavigationContainer>
+            <MainTabs />
+          </NavigationContainer>
+        </PaperProvider>
+        </QueryClientProvider>
+    </RecoilRoot>
 
 
   );

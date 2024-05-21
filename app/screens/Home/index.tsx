@@ -1,39 +1,35 @@
-import { useState } from 'react'; 
+import { useState,useEffect } from 'react'; 
 import { View, StyleSheet,Alert } from 'react-native';
 import { TextInput, Button, Text, useTheme } from 'react-native-paper';
 import { useMutation } from 'react-query';
 import { useRouter } from 'expo-router';
 import { login } from '../../api/awsAuth';
 import { setGetPatient } from '../../api/api';
+import { useRecoilState } from 'recoil';
+import { authTokenState } from '../../store/authState';
+import { Auth } from 'aws-amplify';
 
 export function HomeScreen(){
- 
+  
   const [username, setUsername] = useState<string>('joaosantos@imaginasoft.pt');
   const [password, setPassword] = useState<string>('Imagina2022!');
   const theme = useTheme();
   const router = useRouter();
+  const [userAuth, setUserAuth] = useRecoilState(authTokenState);
 
-  const mutation = useMutation(
-    (credentials: { username: string; password: string }) => 
-      login(credentials.username, credentials.password),
-    {
-      onSuccess: (token) => {
-        // Set the auth token for future requests
-        console.log(token)
-        //setGetPatient(token);
-        // Redirecionar para a página após o login bem-sucedido
-        //router.push('/home');
-      },
-      onError: (error) => {
-        Alert.alert('Erro', 'Falha no login. Verifique suas credenciais.');
-      }
-    }
-  );
-  const handleLogin = () => {
+  //console.log(userAuth?.email);
+
+
+  
+  const handleLogin = async() => {
     // Handle login logic
-    console.log('Username:', username);
-    console.log('Password:', password);
-    mutation.mutate({ username, password });
+    var user = await Auth.signIn({password,username})
+    //console.log(user);
+  };
+
+  const handleLogout = async() => {
+    // Handle Sign out
+    await Auth.signOut();
   };
 
   return (
@@ -56,6 +52,9 @@ export function HomeScreen(){
       />
       <Button mode="contained" onPress={handleLogin} style={styles.button} color={theme.colors.primary}>
         Login
+      </Button>
+      <Button mode="contained" onPress={handleLogout} style={styles.button} color={theme.colors.secondary}>
+        Logout
       </Button>
     </View>
   );
