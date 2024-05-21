@@ -1,14 +1,11 @@
 import * as React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
 import {HomeScreen} from '../../screens/Home';
 import {ClinicMap} from '../../screens/ClinicMap';
 import { BottomNavigation } from 'react-native-paper';
 import theme from '../../theme';  // Importe o tema personalizado
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
+
 
 const HomeRoute = () => <HomeScreen />;
 const MapRoute = () => <ClinicMap />;

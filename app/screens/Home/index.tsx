@@ -1,15 +1,15 @@
-import * as React from 'react';
+import { useState } from 'react'; 
 import { View, StyleSheet,Alert } from 'react-native';
 import { TextInput, Button, Text, useTheme } from 'react-native-paper';
 import { useMutation } from 'react-query';
 import { useRouter } from 'expo-router';
 import { login } from '../../api/awsAuth';
-import { setAuthToken } from '../../api/api';
+import { setGetPatient } from '../../api/api';
 
 export function HomeScreen(){
  
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [username, setUsername] = useState<string>('joaosantos@imaginasoft.pt');
+  const [password, setPassword] = useState<string>('Imagina2022!');
   const theme = useTheme();
   const router = useRouter();
 
@@ -19,7 +19,8 @@ export function HomeScreen(){
     {
       onSuccess: (token) => {
         // Set the auth token for future requests
-        setAuthToken(token);
+        console.log(token)
+        //setGetPatient(token);
         // Redirecionar para a página após o login bem-sucedido
         //router.push('/home');
       },
