@@ -1,15 +1,13 @@
 import { Auth } from 'aws-amplify';
-import { useRecoilState } from 'recoil';
-import { authTokenState } from '../store/authState';
 
-export const login = async (username: string, password: string) => {
+export const GetIdToken = async ()=>{
   try {
     const session = await Auth.currentSession()
     const user = await Auth.currentAuthenticatedUser()
+    //console.log(session.getAccessToken().getJwtToken())
     return session.getAccessToken().getJwtToken()
   } catch (error) {
     console.error('Error getting ID token:', error)
     return null
   }
-
-};
+}
