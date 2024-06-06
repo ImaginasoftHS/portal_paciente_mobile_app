@@ -1,36 +1,54 @@
-import { useState,useEffect } from 'react'; 
-import { View, StyleSheet,Alert } from 'react-native';
-import { TextInput, Button, Text, useTheme } from 'react-native-paper';
-import { useMutation } from 'react-query';
+import { useState, useEffect } from 'react';
+import { View, StyleSheet, Alert } from 'react-native';
+import { TextInput, Button, Text, useTheme, ActivityIndicator } from 'react-native-paper';
+import { useMutation, useQuery } from 'react-query';
 import { useRouter } from 'expo-router';
-//import { login } from '../../api/awsAuth';
-//import { setGetPatient } from '../../api/api';
 import { useRecoilState } from 'recoil';
-import { authTokenState } from '../../store/authState';
-import { Auth } from 'aws-amplify';
+import { AuthTokenState } from '../../store/AuthState';
 
-export function HomeScreen(){
-  
+import { Auth } from 'aws-amplify';
+import { getClinic } from '../../api/getClinic';
+
+export default function HomeScreen() {
+
   const [username, setUsername] = useState<string>('joaosantos@imaginasoft.pt');
   const [password, setPassword] = useState<string>('Imagina2022!');
+  const [userAuth, setUserAuth] = useRecoilState(AuthTokenState);
+  
   const theme = useTheme();
   const router = useRouter();
-  const [userAuth, setUserAuth] = useRecoilState(authTokenState);
-
-  //console.log(userAuth?.email);
-
-
   
-  const handleLogin = async() => {
+  const { data, error, isLoading } = useQuery(['userData', userAuth], () => getClinic(), {
+    enabled: !!userAuth.isAuthenticated, // Apenas executa a query se o token estiver disponível
+    onSuccess: () => {
+      // Redirect to another page on successful data fetch
+      router.navigate('/(tabs)/dashboard'); // Replace '/nextpage' with your target page route
+    }
+  });
+  
+  
+  const handleLogin = async () => {
     // Handle login logic
-    var user = await Auth.signIn({password,username})
-    //console.log(user);
+    var user = await Auth.signIn({ password, username })
+    setUserAuth(user)
+    
   };
-
-  const handleLogout = async() => {
+  
+    
+  const handleLogout = async () => {
     // Handle Sign out
     await Auth.signOut();
   };
+  
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
+  if (error) {
+    console.log("erro");
+
+    return <Text>Error: {error.message}</Text>;
+  }
 
   return (
     <View style={styles.container}>
