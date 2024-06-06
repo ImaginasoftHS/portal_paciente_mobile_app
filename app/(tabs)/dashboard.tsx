@@ -14,10 +14,11 @@ export default function DashboardScreen() {
   //const result = GetIdToken();
 
   const { data, error, isLoading } = useQuery(
-    ["userData", userToken.isAuthenticated],
+    ["userData", userToken.user],
     () => getPatient(userToken.user),
     {
-      enabled: !!userToken.isAuthenticated, // Apenas executa a query se o token estiver disponível
+
+      enabled: userToken.isAuthenticated , // Apenas executa a query se o token estiver disponível
     }
   );
 

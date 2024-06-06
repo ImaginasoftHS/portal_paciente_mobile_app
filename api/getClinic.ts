@@ -13,7 +13,7 @@ export interface ClinicStateTypes {
   clinicLogoImage: string
 }
 
-export const getClinic = async ():Promise<ClinicStateTypes> => {
+export const getClinic = async () => {
   
   
   const response = await api.get(`/getclinic?key=${hashClinic}`);

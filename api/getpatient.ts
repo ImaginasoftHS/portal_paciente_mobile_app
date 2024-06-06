@@ -1,7 +1,7 @@
 import { GetIdToken } from "./awsAuth";
 import {api} from './api'
 export const getPatient = async (user: any) => {
-    console.log("*************");
+    console.log("*******GET_PATIENT******");
     
     console.log(user)
 

@@ -19,7 +19,10 @@ export default function HomeScreen() {
   const router = useRouter();
   
   const { data, error, isLoading } = useQuery(['userData', userAuth], () => getClinic(), {
-    enabled: !!userAuth.isAuthenticated, // Apenas executa a query se o token estiver disponível
+    keepPreviousData:false,
+    refetchOnMount: true,
+    refetchOnWindowFocus : false,
+    enabled: userAuth.isAuthenticated, // Apenas executa a query se o token estiver disponível
     onSuccess: () => {
       // Redirect to another page on successful data fetch
       router.navigate('/(tabs)/dashboard'); // Replace '/nextpage' with your target page route

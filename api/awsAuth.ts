@@ -4,7 +4,12 @@ export const GetIdToken = async ()=>{
   try {
     const session = await Auth.currentSession()
     const user = await Auth.currentAuthenticatedUser()
+    console.log("aaaaaaaaaaaaaaaaaaaa");
+    
     console.log(user);
+
+    console.log("aaaaaaaaaaaaaaaaaaaa");
+    
     
     //console.log(session.getAccessToken().getJwtToken())
     return await session.getAccessToken().getJwtToken()
